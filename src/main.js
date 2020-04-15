@@ -1,9 +1,9 @@
 // Nathan Altice
 // Updated: 4/14/20
 // Asset Management
-// Testing various asset types
+// Testing various Phaser 3 asset types
 
-// discipline
+// discipline and punish
 'use strict';
 
 // Test Scene
@@ -13,6 +13,19 @@ class Test extends Phaser.Scene {
     }
 
     preload() {
+        // set up loading bar
+        // see: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/loader/
+        let loading = this.add.graphics();
+        // see: https://photonstorm.github.io/phaser3-docs/Phaser.Loader.Events.html
+        this.load.on('progress', (value)=> {
+            loading.clear();                            // reset fill/line style
+            loading.fillStyle(0xFACADE, 1);             // (color, alpha)
+            loading.fillRect(100, 300, 700*value, 15);  // (x, y, width, height)
+        });
+        this.load.on('complete', ()=> {
+            loading.destroy();
+        });
+
         // set load path to save some typing
         this.load.path = "./assets/";
         // images
@@ -22,6 +35,7 @@ class Test extends Phaser.Scene {
         this.load.image('parallaxMountains', 'parallaxMountains.png');
         this.load.image('parallaxTreeline', 'parallaxTreeline.png');
         this.load.image('squarepattern', 'squarepattern.png');
+        this.load.image('colorwaves', 'colorwaves.jpeg');
         // spritesheet
         this.load.spritesheet('pinkhover', 'pinkhover.png', {
             frameWidth: 100,
@@ -38,6 +52,10 @@ class Test extends Phaser.Scene {
     }
 
     create() {
+        // output TextureManager cache
+        let cache = this.textures;
+        console.log(cache.list);
+
         // demonstrate video
         // see: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/video/
         // scene.load.video(key, url, loadEvent, asBlob, noAudio);
@@ -50,7 +68,22 @@ class Test extends Phaser.Scene {
             rate: 1,
             loop: true
         });
-        this.bgm.play();
+        //this.bgm.play();
+
+        // demonstrate graphics primitives
+        let graphics = this.add.graphics();
+        // see: https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Graphics.html#setTexture__anchor
+        // setTexture( [key] [, frame] [, mode]) | 
+        // mode: 0 multiply, 1 alpha only, 2 texture only
+        graphics.setTexture('colorwaves', null, 2);  
+        // fillTriangle(x0, y0, x1, y1, x2, y2)           
+        graphics.fillTriangle(400, 150, 350, 250, 450, 250);
+        // clear texture for a new shape
+        graphics.setTexture();  
+        // fillGradientStyle(topLeft, topRight, bottomLeft, bottomRight [, alpha])
+        graphics.fillGradientStyle(0xff0000, 0xff0000, 0xffff00, 0xffff00, 0.75);
+        // fillCircle(x, y, radius)
+        graphics.fillCircle(400, 350, 50);
 
         // demonstrate images
         // first (static)
@@ -76,7 +109,7 @@ class Test extends Phaser.Scene {
             this.colorsquare04.setTexture('fastboy');
             this.colorsquare04.setRandomPosition();
             this.colorsquare04.setDepth(10);
-            this.sound.play('jumpSFX', { volume: 0.5 });
+            this.sound.play('jumpSFX', { volume: 0.25 });
         });
         // sixth (interactive angle change)
         this.colorsquare05 = this.add.image(550, 50, 'colorsquare');
@@ -121,7 +154,9 @@ class Test extends Phaser.Scene {
         this.treeline = this.add.tileSprite(0, 500, 800, 100, 'parallaxTreeline').setOrigin(0,0);
 
         // demonstrate quad (tween alpha / corners)
-        this.add.quad(400, 300, 'squarepattern');
+        // unaltered quad
+        //this.add.quad(400, 300, 'squarepattern');
+        // animated quad
         this.checkers = this.add.quad(600, 300, 'squarepattern');
         this.checkers.setDepth(-2);
         this.tweens.add({
@@ -151,18 +186,19 @@ class Test extends Phaser.Scene {
         this.skyline.tilePositionX += 0.1;
         this.mountains.tilePositionX -= 0.3;
         this.treeline.tilePositionX -= 1;
+
+        // rotate the fruits and veg
+        this.fruit01.angle += 0.5;
+        this.fruit02.angle -= 1;
     }
 }
 
-// configure and create game
+// configure and create ゲーム
 let config = {
-    type: Phaser.AUTO,
+    type: Phaser.WEBGL,
     width: 800,
     height: 600,
     scene: [ Test ],
-    render: {
-        pixelArt: true,
-    }
 }
 
 let game = new Phaser.Game(config);
