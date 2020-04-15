@@ -135,9 +135,9 @@ class Test extends Phaser.Scene {
             });
         });
 
-        // demonstrate sprites
+        // demonstrate sprites 👾
         // first (static w/ specific frame number)
-        this.pinkhoverStatic = this.add.sprite(100, 200, 'pinkhover', 3);
+        this.pinkhoverStatic = this.add.sprite(100, 150, 'pinkhover', 3);
         // second (animated / infinite repeat)
         let config = {
             key: 'hoverAnimation',
@@ -146,7 +146,21 @@ class Test extends Phaser.Scene {
             repeat: -1,
         };
         this.anims.create(config);
-        this.pinkhoverAnimated = this.add.sprite(200, 200, 'pinkhover').play('hoverAnimation');
+        this.pinkhoverAnimated = this.add.sprite(200, 150, 'pinkhover').play('hoverAnimation');
+
+        // demonstrate isoBox
+        // ([, x] [, y] [, size] [, height] [, fillTop] [, fillLeft] [, fillRight])
+        this.cube = this.add.isobox(100, 300, 50, 25);
+        // ([, x] [, y] [, size] [, height] [, reversed] [, fillTop] [, fillLeft] [, fillRight])
+        this.pyramid = this.add.isotriangle(200, 350, 25, 100, true, 0x00FF00, 0x00AA00, 0x003300);
+        this.tweens.add({
+            targets: [this.cube, this.pyramid],
+            projection: 1.5,
+            yoyo: true,
+            duration: 5000,
+            ease: 'Sine.easeInOut',
+            repeat: -1
+        });
 
         // demonstrate tile sprites x3 for parallax effect
         this.skyline = this.add.tileSprite(0, 455, 800, 100, 'parallaxSky').setOrigin(0,0);
