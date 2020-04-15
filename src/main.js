@@ -32,13 +32,30 @@ class Test extends Phaser.Scene {
         this.load.atlas('fruitandveg', 'fruitandveg.png', 'fruitandveg.json');
         // sound
         this.load.audio('jumpSFX', 'jumpSFX.wav');
+        this.load.audio('rail', 'railonnines.mp3');
+        // video
+        this.load.video('hypnotic', 'hypnotic.mp4', 'loadeddata', false, true);
     }
 
     create() {
+        // demonstrate video
+        // see: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/video/
+        // scene.load.video(key, url, loadEvent, asBlob, noAudio);
+        //this.add.video(100, 100, 'hypnotic').setOrigin(0).play(true).setScale(0.25);
+
+        // demonstrate bgm
+        this.bgm = this.sound.add('rail', {
+            mute: false,
+            volume: 0.5,
+            rate: 1,
+            loop: true
+        });
+        this.bgm.play();
+
         // demonstrate images
         // first (static)
         this.colorsquare00 = this.add.image(0, 0, 'colorsquare').setOrigin(0,0);
-        // second (flip Y)
+        // second (flip Y / alpha)
         this.colorsquare01 = this.add.image(100, 0, 'colorsquare').setOrigin(0,0);
         this.colorsquare01.setAlpha(0.1, 0.5, 1, 0.75);
         this.colorsquare01.flipY = true;  
@@ -59,7 +76,7 @@ class Test extends Phaser.Scene {
             this.colorsquare04.setTexture('fastboy');
             this.colorsquare04.setRandomPosition();
             this.colorsquare04.setDepth(10);
-            this.sound.play('jumpSFX');
+            this.sound.play('jumpSFX', { volume: 0.5 });
         });
         // sixth (interactive angle change)
         this.colorsquare05 = this.add.image(550, 50, 'colorsquare');
@@ -149,9 +166,3 @@ let config = {
 }
 
 let game = new Phaser.Game(config);
-
-// load texture atlas
-this.load.atlas('key', 'image.png', 'atlas.json');
-
-// add a texture atlas sprite
-this.add.sprite(x, y, 'key', 'frame_name');
