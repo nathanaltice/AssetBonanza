@@ -1,15 +1,15 @@
 // Nathan Altice
-// Updated: 4/14/20
+// Updated: 6/30/20
 // Asset Management
 // Testing various Phaser 3 asset types
 
-// discipline and punish
+// Discipline and Punish
 'use strict';
 
 // Test Scene
 class Test extends Phaser.Scene {
     constructor() {
-        super("testScene");
+        super('testScene');
     }
 
     preload() {
@@ -27,7 +27,7 @@ class Test extends Phaser.Scene {
         });
 
         // set load path to save some typing
-        this.load.path = "./assets/";
+        this.load.path = './assets/';
         // images
         this.load.image('colorsquare', 'colorsquare.png');
         this.load.image('fastboy', 'fastboy.png');
@@ -191,7 +191,7 @@ class Test extends Phaser.Scene {
         });
 
         // add sprites from our texture atlas
-        this.fruit01 = this.add.sprite(100, 400, 'fruitandveg', 'pear');
+        this.fruit01 = this.add.sprite(100, 400, 'fruitandveg', 'grapes');
         this.fruit02 = this.add.sprite(200, 400, 'fruitandveg', 'tomato');
     }
 
