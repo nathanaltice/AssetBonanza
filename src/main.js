@@ -1,5 +1,5 @@
 // Nathan Altice
-// Updated: 6/30/20
+// Updated: 3/28/21
 // Asset Management
 // Testing various Phaser 3 asset types
 
@@ -42,7 +42,7 @@ class Test extends Phaser.Scene {
             frameHeight: 100,
             endFrame: 7
         });
-        // texture atlas aka fruit salad time 🍇
+        // texture atlas (aka fruit salad time 🍇 )
         this.load.atlas('fruitandveg', 'fruitandveg.png', 'fruitandveg.json');
         // sound
         this.load.audio('jumpSFX', 'jumpSFX.wav');
@@ -56,36 +56,9 @@ class Test extends Phaser.Scene {
         let cache = this.textures;
         console.log(cache.list);
 
-        // demonstrate video
-        // see: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/video/
-        // scene.load.video(key, url, loadEvent, asBlob, noAudio);
-        //this.add.video(100, 100, 'hypnotic').setOrigin(0).play(true).setScale(0.25);
-
-        // demonstrate bgm
-        this.bgm = this.sound.add('rail', {
-            mute: false,
-            volume: 0.5,
-            rate: 1,
-            loop: true
-        });
-        //this.bgm.play();
-
-        // demonstrate graphics primitives
-        let graphics = this.add.graphics();
-        // see: https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Graphics.html#setTexture__anchor
-        // setTexture( [key] [, frame] [, mode]) | 
-        // mode: 0 multiply, 1 alpha only, 2 texture only
-        graphics.setTexture('colorwaves', null, 2);  
-        // fillTriangle(x0, y0, x1, y1, x2, y2)           
-        graphics.fillTriangle(400, 150, 350, 250, 450, 250);
-        // clear texture for a new shape
-        graphics.setTexture();  
-        // fillGradientStyle(topLeft, topRight, bottomLeft, bottomRight [, alpha])
-        graphics.fillGradientStyle(0xff0000, 0xff0000, 0xffff00, 0xffff00, 0.75);
-        // fillCircle(x, y, radius)
-        graphics.fillCircle(400, 350, 50);
-
-        // demonstrate images
+        /***********************************
+        // IMAGES
+        ***********************************/
         // first (static)
         this.colorsquare00 = this.add.image(0, 0, 'colorsquare').setOrigin(0,0);
         // second (flip Y / alpha)
@@ -135,7 +108,45 @@ class Test extends Phaser.Scene {
             });
         });
 
-        // demonstrate sprites 👾
+        /***********************************
+        // VIDEO
+        ***********************************/
+        // see: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/video/
+        // scene.load.video(key, url, loadEvent, asBlob, noAudio);
+        this.add.video(500, 100, 'hypnotic').setOrigin(0).play(true).setScale(0.25);
+
+        /***********************************
+        // BGM (aka Background Music)
+        ***********************************/
+        this.bgm = this.sound.add('rail', {
+            mute: false,
+            volume: 0.5,
+            rate: 1,
+            loop: true
+        });
+        //this.bgm.play();
+
+        /***********************************
+        // GRAPHICS PRIMITIVES
+        ***********************************/
+        let graphics = this.add.graphics(); 
+        // set gradiant fill for triangle
+        // fillGradientStyle(topLeft, topRight, bottomLeft, bottomRight [, alpha])
+        graphics.fillGradientStyle(0xff0000, 0xff0000, 0xffff00, 0xffff00, 0.75);
+        // fillTriangle(x0, y0, x1, y1, x2, y2)           
+        graphics.fillTriangle(400, 150, 350, 250, 450, 250); 
+        // set fill style for circle
+        graphics.fillStyle(0x00ccff, 1);
+        // fillCircle(x, y, radius)
+        graphics.fillCircle(400, 350, 50);
+        // set line style for rounded rectangle
+        graphics.lineStyle(2, 0xffff00, 1);
+        // strokeRoundedRect(x, y, w, h, alpha)
+        graphics.strokeRoundedRect(300, 150, 100, 200, 24);
+
+        /***********************************
+        // SPRITES (from sprite sheet)
+        ***********************************/
         // first (static w/ specific frame number)
         this.pinkhoverStatic = this.add.sprite(100, 150, 'pinkhover', 3);
         // second (animated / infinite repeat)
@@ -148,7 +159,15 @@ class Test extends Phaser.Scene {
         this.anims.create(config);
         this.pinkhoverAnimated = this.add.sprite(200, 150, 'pinkhover').play('hoverAnimation');
 
-        // demonstrate isoBox
+        /***********************************
+        // SPRITES (from texture atlas)
+        ***********************************/
+        this.fruit01 = this.add.sprite(100, 400, 'fruitandveg', 'grapes');
+        this.fruit02 = this.add.sprite(200, 400, 'fruitandveg', 'tomato');
+
+        /***********************************
+        // ISOBOX
+        ***********************************/
         // ([, x] [, y] [, size] [, height] [, fillTop] [, fillLeft] [, fillRight])
         this.cube = this.add.isobox(100, 300, 50, 25);
         // ([, x] [, y] [, size] [, height] [, reversed] [, fillTop] [, fillLeft] [, fillRight])
@@ -162,37 +181,12 @@ class Test extends Phaser.Scene {
             repeat: -1
         });
 
-        // demonstrate tile sprites x3 for parallax effect
+        /***********************************
+        // TILE SPRITES
+        ***********************************/
         this.skyline = this.add.tileSprite(0, 455, 800, 100, 'parallaxSky').setOrigin(0,0);
         this.mountains = this.add.tileSprite(0, 455, 800, 100, 'parallaxMountains').setOrigin(0,0);
         this.treeline = this.add.tileSprite(0, 500, 800, 100, 'parallaxTreeline').setOrigin(0,0);
-
-        // demonstrate quad (tween alpha / corners)
-        // unaltered quad
-        //this.add.quad(400, 300, 'squarepattern');
-        // animated quad
-        this.checkers = this.add.quad(600, 300, 'squarepattern');
-        this.checkers.setDepth(-2);
-        this.tweens.add({
-            targets: this.checkers,
-            bottomRightAlpha: 0.5,
-            topLeftX: 700,
-            topLeftY: 500,
-            topRightX: 650,
-            topRightY: 15,
-            bottomRightX: 800,
-            bottomRightY: 310,
-            bottomLeftX: 300,
-            bottomLeftY: 400,
-            duration: 10000,
-            yoyo: true,
-            ease: 'Linear',
-            repeat: -1,
-        });
-
-        // add sprites from our texture atlas
-        this.fruit01 = this.add.sprite(100, 400, 'fruitandveg', 'grapes');
-        this.fruit02 = this.add.sprite(200, 400, 'fruitandveg', 'tomato');
     }
 
     update() {
