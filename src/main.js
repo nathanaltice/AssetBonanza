@@ -52,7 +52,7 @@ class Test extends Phaser.Scene {
     }
 
     create() {
-        // output TextureManager cache
+        // output TextureManager cache (this allows us to 'see' what's been loaded)
         let cache = this.textures;
         console.log(cache.list);
 
@@ -82,7 +82,7 @@ class Test extends Phaser.Scene {
             this.colorsquare04.setTexture('fastboy');
             this.colorsquare04.setRandomPosition();
             this.colorsquare04.setDepth(10);
-            this.sound.play('jumpSFX', { volume: 0.25 });
+            this.sound.play('jumpSFX', { volume: 0.1 });
         });
         // sixth (interactive angle change)
         this.colorsquare05 = this.add.image(550, 50, 'colorsquare');
