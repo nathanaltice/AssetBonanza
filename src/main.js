@@ -28,6 +28,7 @@ class Test extends Phaser.Scene {
 
         // set load path to save some typing
         this.load.path = './assets/';
+        
         // images
         this.load.image('colorsquare', 'colorsquare.png');
         this.load.image('fastboy', 'fastboy.png');
@@ -36,17 +37,21 @@ class Test extends Phaser.Scene {
         this.load.image('parallaxTreeline', 'parallaxTreeline.png');
         this.load.image('squarepattern', 'squarepattern.png');
         this.load.image('colorwaves', 'colorwaves.jpeg');
+        
         // spritesheet
         this.load.spritesheet('pinkhover', 'pinkhover.png', {
             frameWidth: 100,
             frameHeight: 100,
             endFrame: 7
         });
+        
         // texture atlas (aka fruit salad time 🍇 )
         this.load.atlas('fruitandveg', 'fruitandveg.png', 'fruitandveg.json');
+        
         // sound
         this.load.audio('jumpSFX', 'jumpSFX.wav');
         this.load.audio('rail', 'railonnines.mp3');
+        
         // video
         this.load.video('hypnotic', 'hypnotic.mp4', 'loadeddata', false, true);
     }
@@ -61,13 +66,16 @@ class Test extends Phaser.Scene {
         ***********************************/
         // first (static)
         this.colorsquare00 = this.add.image(0, 0, 'colorsquare').setOrigin(0,0);
+        
         // second (flip Y / alpha)
         this.colorsquare01 = this.add.image(100, 0, 'colorsquare').setOrigin(0,0);
         this.colorsquare01.setAlpha(0.1, 0.5, 1, 0.75);
         this.colorsquare01.flipY = true;  
+        
         // third (tint - Gameboy-esque colors 💚)
         this.colorsquare02 = this.add.image(200, 0, 'colorsquare').setOrigin(0,0);
         this.colorsquare02.tint = 0x00FF11;         // WebGL only
+        
         // fourth (interactive Y flip / blend mode)
         this.colorsquare03 = this.add.image(300, 0, 'colorsquare').setOrigin(0,0);
         this.colorsquare03.flipY = true;
@@ -76,6 +84,7 @@ class Test extends Phaser.Scene {
             console.log(`pointer: ${pointer}, localX: ${localX}, localY: ${localY}, event: ${event}`);
             this.colorsquare03.toggleFlipY();   // context is still the scene
         });
+        
         // fifth (pointerover / change texture / set random position / play sound)
         this.colorsquare04 = this.add.image(400, 0, 'colorsquare').setOrigin(0,0);
         this.colorsquare04.setInteractive().on('pointerover',()=>{
@@ -84,16 +93,19 @@ class Test extends Phaser.Scene {
             this.colorsquare04.setDepth(10);
             this.sound.play('jumpSFX', { volume: 0.1 });
         });
+        
         // sixth (interactive angle change)
         this.colorsquare05 = this.add.image(550, 50, 'colorsquare');
         this.colorsquare05.setInteractive().on('pointerdown',()=>{
             this.colorsquare05.angle += 45;
         });
+        
         // seventh (interactive make smol)
         this.colorsquare06 = this.add.image(600, 0, 'colorsquare').setOrigin(0,0);
         this.colorsquare06.setInteractive().on('pointerdown',()=>{
             this.colorsquare06.setScale(0.25);
         });
+        
         // eighth (display depth / interactive tween)
         this.colorsquare07 = this.add.image(700, 0, 'colorsquare').setOrigin(0,0);
         this.colorsquare07.setDepth(-1);    // set depth below other squares
@@ -149,10 +161,11 @@ class Test extends Phaser.Scene {
         ***********************************/
         // first (static w/ specific frame number)
         this.pinkhoverStatic = this.add.sprite(100, 150, 'pinkhover', 3);
+        
         // second (animated / infinite repeat)
         let config = {
             key: 'hoverAnimation',
-            frames: this.anims.generateFrameNumbers('pinkhover', { start: 0, end: 7, first: 0}),
+            frames: this.anims.generateFrameNumbers('pinkhover', { start: 0, end: 7, first: 0 }),
             frameRate: 15,
             repeat: -1,
         };
